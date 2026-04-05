@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,11 +7,7 @@
     <title>NFIRS Reports</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap');
-        
-        :root {
-            --tw-color-primary: #e6392e;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
         
         * {
             transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
@@ -36,7 +31,7 @@
         }
         
         .input-field {
-            @apply w-full px-4 py-3.5 bg-white border border-gray-300 rounded-2xl text-base focus:outline-none focus:border-[#e6392e] focus:ring-4 focus:ring-[#e6392e]/10;
+            @apply w-full px-4 py-3.5 bg-white border-2 border-gray-300 rounded-3xl text-base focus:outline-none focus:border-[#e6392e] focus:ring-4 focus:ring-[#e6392e]/10 shadow-sm;
         }
         
         .section-header {
@@ -44,7 +39,7 @@
         }
         
         .form-card {
-            @apply bg-white rounded-3xl shadow-sm border border-gray-100 p-6 mb-6;
+            @apply bg-white rounded-3xl shadow-sm border-2 border-gray-100 p-6 mb-6;
         }
         
         .phone-frame {
@@ -53,11 +48,22 @@
             box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
             border-radius: 40px;
             overflow: hidden;
+            background: white;
+        }
+
+        /* Modal */
+        .modal {
+            animation: fadeInScale 0.2s ease-out forwards;
+        }
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
 <body class="bg-gray-950 min-h-screen flex items-center justify-center p-4">
-    <div class="phone-frame bg-white w-full">
+    <div class="phone-frame w-full">
         <!-- HEADER -->
         <div class="bg-[#e6392e] px-6 py-5 text-white">
             <div class="flex items-center justify-between">
@@ -77,25 +83,13 @@
 
         <!-- TABS -->
         <div class="flex border-b border-gray-200 bg-white sticky top-0 z-10">
-            <button onclick="switchTab(0)" 
-                    id="tab-0"
-                    class="tab-button flex-1 py-4 text-base font-semibold active flex items-center justify-center gap-1">
-                🚗 Vehicle
-            </button>
-            <button onclick="switchTab(1)" 
-                    id="tab-1"
-                    class="tab-button flex-1 py-4 text-base font-semibold flex items-center justify-center gap-1">
-                🏠 Structure
-            </button>
-            <button onclick="switchTab(2)" 
-                    id="tab-2"
-                    class="tab-button flex-1 py-4 text-base font-semibold flex items-center justify-center gap-1">
-                📦 Appliance
-            </button>
+            <button onclick="switchTab(0)" id="tab-0" class="tab-button flex-1 py-4 text-base font-semibold active flex items-center justify-center gap-1">🚗 Vehicle</button>
+            <button onclick="switchTab(1)" id="tab-1" class="tab-button flex-1 py-4 text-base font-semibold flex items-center justify-center gap-1">🏠 Structure</button>
+            <button onclick="switchTab(2)" id="tab-2" class="tab-button flex-1 py-4 text-base font-semibold flex items-center justify-center gap-1">📦 Appliance</button>
         </div>
 
-        <!-- CONTENT CONTAINER -->
-        <div class="p-5 pb-8 max-h-[calc(100vh-140px)] overflow-y-auto">
+        <!-- CONTENT CONTAINER – fixed height + extra bottom padding so nothing gets hidden -->
+        <div id="content-scroll" class="p-5 pb-32 max-h-[calc(100vh-140px)] overflow-y-auto">
             
             <!-- VEHICLE FIRE TAB -->
             <div id="content-0" class="tab-content">
@@ -103,39 +97,19 @@
                     <div class="form-card">
                         <h2 class="section-header mb-4"><span>🚗</span> Vehicle Fire</h2>
                         
-                        <!-- Basic Info -->
                         <div class="mb-6">
                             <h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Vehicle Details</h3>
                             <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Year</label>
-                                    <input type="text" name="Year" id="v-year" class="input-field" placeholder="2024">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Make</label>
-                                    <input type="text" name="Make" id="v-make" class="input-field" placeholder="Ford">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Model</label>
-                                    <input type="text" name="Model" id="v-model" class="input-field" placeholder="F-150">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Plate # &amp; State</label>
-                                    <input type="text" name="Plate # and state" id="v-plate" class="input-field" placeholder="ABC1234 OH">
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Year</label><input type="text" name="Year" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Make</label><input type="text" name="Make" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Model</label><input type="text" name="Model" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Plate # &amp; State</label><input type="text" name="Plate # and state" class="input-field"></div>
                             </div>
-                            <div class="mt-4">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">VIN #</label>
-                                <input type="text" name="VIN #" id="v-vin" class="input-field" placeholder="1FTEW1EPXJFB12345">
-                            </div>
+                            <div class="mt-4"><label class="block text-xs font-medium text-gray-500 mb-1">VIN #</label><input type="text" name="VIN #" class="input-field"></div>
                             <div class="grid grid-cols-2 gap-4 mt-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Color</label>
-                                    <input type="text" name="Color" id="v-color" class="input-field" placeholder="Red">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Power Source</label>
-                                    <select name="Power source of vehicle" id="v-power" class="input-field">
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Color</label><input type="text" name="Color" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Power Source</label>
+                                    <select name="Power source of vehicle" class="input-field">
                                         <option value="">Select...</option>
                                         <option value="Gas">Gas</option>
                                         <option value="Diesel">Diesel</option>
@@ -147,79 +121,41 @@
                             </div>
                         </div>
 
-                        <!-- People -->
                         <div class="mb-6">
                             <h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Driver &amp; Owner</h3>
                             <div class="space-y-5">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Driver's Name</label>
-                                    <input type="text" name="Driver's name" id="v-driver-name" class="input-field">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Driver's Address</label>
-                                    <textarea name="Driver's address" id="v-driver-address" rows="2" class="input-field resize-y"></textarea>
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Driver's Name</label><input type="text" name="Driver's name" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Driver's Address</label><textarea name="Driver's address" rows="2" class="input-field resize-y"></textarea></div>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Driver's Phone #</label>
-                                        <input type="tel" name="Driver's phone #" id="v-driver-phone" class="input-field" placeholder="(937) 555-1234">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Officers on Scene</label>
-                                        <input type="text" name="Officers on scene" id="v-officers" class="input-field" placeholder="Ofc. Smith, Lt. Jones">
-                                    </div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Driver's Phone #</label><input type="tel" name="Driver's phone #" class="input-field"></div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Officers on Scene</label><input type="text" name="Officers on scene" class="input-field"></div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Name</label>
-                                    <input type="text" name="Owner's name" id="v-owner-name" class="input-field">
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Name</label><input type="text" name="Owner's name" class="input-field"></div>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Address</label>
-                                        <textarea name="Owner's address" id="v-owner-address" rows="2" class="input-field resize-y"></textarea>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Phone #</label>
-                                        <input type="tel" name="Owner's phone #" id="v-owner-phone" class="input-field" placeholder="(937) 555-1234">
-                                    </div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Address</label><textarea name="Owner's address" rows="2" class="input-field resize-y"></textarea></div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Phone #</label><input type="tel" name="Owner's phone #" class="input-field"></div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Narrative -->
-                        <div class="form-card border border-dashed border-orange-300 bg-orange-50/50">
+                        <div class="form-card border-2 border-dashed border-orange-300 bg-orange-50/50">
                             <h3 class="section-header mb-4"><span>📝</span> Narrative Information</h3>
                             <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Weather / Wind</label>
-                                    <input type="text" name="Weather / wind" id="v-weather" class="input-field" placeholder="Clear, 12 mph NW">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Vehicle Location (direction / lane)</label>
-                                    <input type="text" name="Vehicle location- direction of travel / lane of travel" id="v-location" class="input-field" placeholder="EB in left lane on I-70">
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Weather / Wind</label><input type="text" name="Weather / wind" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Vehicle Location (direction / lane)</label><input type="text" name="Vehicle location- direction of travel / lane of travel" class="input-field"></div>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Battery Disconnected?</label>
-                                        <select name="Did you d/c the battery?" id="v-battery" class="input-field">
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Battery Disconnected?</label>
+                                        <select name="Did you d/c the battery?" class="input-field">
                                             <option value="">Select...</option>
                                             <option value="Yes">Yes</option>
                                             <option value="No">No</option>
                                             <option value="N/A">N/A</option>
                                         </select>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Noises / Smoke / Fluids Prior?</label>
-                                        <textarea name="Noises / smoke / leaking fluids prior to fire?" id="v-prior" rows="2" class="input-field resize-y"></textarea>
-                                    </div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Noises / Smoke / Fluids Prior?</label><textarea name="Noises / smoke / leaking fluids prior to fire?" rows="2" class="input-field resize-y"></textarea></div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Recent Maintenance?</label>
-                                    <textarea name="Any recent maintenance?" id="v-maintenance" rows="2" class="input-field resize-y"></textarea>
-                                </div>
-                                <div class="bg-white rounded-2xl p-4 text-xs text-gray-600 flex items-start gap-2 border border-orange-200">
-                                    📸 <strong>Take pictures of ALL sides + VIN plate + damage</strong>
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Recent Maintenance?</label><textarea name="Any recent maintenance?" rows="2" class="input-field resize-y"></textarea></div>
+                                <div class="bg-white rounded-2xl p-4 text-xs text-gray-600 flex items-start gap-2 border border-orange-200">📸 Take pictures of ALL sides + VIN plate + damage</div>
                             </div>
                         </div>
                     </div>
@@ -234,46 +170,23 @@
                         
                         <div class="mb-6">
                             <h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Structure Details</h3>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Address</label>
-                                <input type="text" name="Address" id="s-address" class="input-field" placeholder="123 Main St, Xenia, OH 45385">
-                            </div>
+                            <div><label class="block text-xs font-medium text-gray-500 mb-1">Address</label><input type="text" name="Address" class="input-field"></div>
                             <div class="grid grid-cols-2 gap-4 mt-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1"># of Stories</label>
-                                    <input type="number" name="# of stories" id="s-stories" class="input-field" placeholder="2">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1"># of Units</label>
-                                    <input type="number" name="# of units" id="s-units" class="input-field" placeholder="4">
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1"># of Stories</label><input type="number" name="# of stories" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1"># of Units</label><input type="number" name="# of units" class="input-field"></div>
                             </div>
                         </div>
 
-                        <!-- Detector -->
                         <div class="mb-6">
                             <h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Detector Information</h3>
                             <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Make</label>
-                                    <input type="text" name="Detector make" id="s-det-make" class="input-field">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Model</label>
-                                    <input type="text" name="Detector model" id="s-det-model" class="input-field">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Serial #</label>
-                                    <input type="text" name="Detector serial" id="s-det-serial" class="input-field">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Power Source</label>
-                                    <input type="text" name="Detector power source" id="s-det-power" class="input-field" placeholder="Battery / Hardwired">
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Make</label><input type="text" name="Detector make" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Model</label><input type="text" name="Detector model" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Serial #</label><input type="text" name="Detector serial" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Power Source</label><input type="text" name="Detector power source" class="input-field"></div>
                             </div>
-                            <div class="mt-4">
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Working?</label>
-                                <select name="Detector working?" id="s-det-working" class="input-field">
+                            <div class="mt-4"><label class="block text-xs font-medium text-gray-500 mb-1">Working?</label>
+                                <select name="Detector working?" class="input-field">
                                     <option value="">Select...</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
@@ -282,78 +195,40 @@
                             </div>
                         </div>
 
-                        <!-- People & Origin -->
                         <div class="mb-6">
                             <h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Occupants &amp; Owner</h3>
                             <div class="space-y-5">
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Occupant's Name</label>
-                                        <input type="text" name="Occupant's name" id="s-occ-name" class="input-field">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Occupant's Phone #</label>
-                                        <input type="tel" name="Occupant's phone #" id="s-occ-phone" class="input-field">
-                                    </div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Occupant's Name</label><input type="text" name="Occupant's name" class="input-field"></div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Occupant's Phone #</label><input type="tel" name="Occupant's phone #" class="input-field"></div>
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Name</label>
-                                        <input type="text" name="Owner's name" id="s-owner-name" class="input-field">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Phone #</label>
-                                        <input type="tel" name="Owner's phone #" id="s-owner-phone" class="input-field">
-                                    </div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Name</label><input type="text" name="Owner's name" class="input-field"></div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Phone #</label><input type="tel" name="Owner's phone #" class="input-field"></div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Address</label>
-                                    <textarea name="Owner's address" id="s-owner-address" rows="2" class="input-field resize-y"></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Origin and Cause</label>
-                                    <textarea name="Origin and cause" id="s-origin" rows="3" class="input-field resize-y"></textarea>
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Address</label><textarea name="Owner's address" rows="2" class="input-field resize-y"></textarea></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Origin and Cause</label><textarea name="Origin and cause" rows="3" class="input-field resize-y"></textarea></div>
                             </div>
                         </div>
 
-                        <!-- Narrative -->
-                        <div class="form-card border border-dashed border-orange-300 bg-orange-50/50">
+                        <div class="form-card border-2 border-dashed border-orange-300 bg-orange-50/50">
                             <h3 class="section-header mb-4"><span>📝</span> Narrative Information</h3>
                             <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Weather / Wind</label>
-                                    <input type="text" name="Weather / wind" id="s-weather" class="input-field">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Initial &amp; Ongoing Fire Conditions</label>
-                                    <textarea name="Initial and ongoing fire conditions noted" id="s-conditions" rows="3" class="input-field resize-y"></textarea>
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Weather / Wind</label><input type="text" name="Weather / wind" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Initial &amp; Ongoing Fire Conditions</label><textarea name="Initial and ongoing fire conditions noted" rows="3" class="input-field resize-y"></textarea></div>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Force Entry?</label>
-                                        <select name="Did you force entry?" id="s-force" class="input-field">
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Force Entry?</label>
+                                        <select name="Did you force entry?" class="input-field">
                                             <option value="">Select...</option>
                                             <option value="Yes">Yes</option>
                                             <option value="No">No</option>
                                         </select>
                                     </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Windows (broken prior?)</label>
-                                        <textarea name="Windows (broken prior? Who broke? How?)" id="s-windows" rows="2" class="input-field resize-y"></textarea>
-                                    </div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Windows (broken prior?)</label><textarea name="Windows (broken prior? Who broke? How?)" rows="2" class="input-field resize-y"></textarea></div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Actions Affecting Investigation</label>
-                                    <textarea name="Any actions that might effect the investigation" id="s-actions" rows="2" class="input-field resize-y"></textarea>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Ventilation Techniques</label>
-                                    <textarea name="Ventilation techniques" id="s-vent" rows="2" class="input-field resize-y"></textarea>
-                                </div>
-                                <div class="bg-white rounded-2xl p-4 text-xs text-gray-600 flex items-start gap-2 border border-orange-200">
-                                    📸 <strong>Attach all pictures + scene photos</strong>
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Actions Affecting Investigation</label><textarea name="Any actions that might effect the investigation" rows="2" class="input-field resize-y"></textarea></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Ventilation Techniques</label><textarea name="Ventilation techniques" rows="2" class="input-field resize-y"></textarea></div>
+                                <div class="bg-white rounded-2xl p-4 text-xs text-gray-600 flex items-start gap-2 border border-orange-200">📸 Attach all pictures + scene photos</div>
                             </div>
                         </div>
                     </div>
@@ -367,353 +242,207 @@
                         <h2 class="section-header mb-4"><span>📦</span> Appliance Fire</h2>
                         
                         <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Brand</label>
-                                <input type="text" name="Brand" id="a-brand" class="input-field" placeholder="GE">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Model</label>
-                                <input type="text" name="Model" id="a-model" class="input-field">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Year</label>
-                                <input type="text" name="Year" id="a-year" class="input-field">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Serial #</label>
-                                <input type="text" name="Serial #" id="a-serial" class="input-field">
-                            </div>
+                            <div><label class="block text-xs font-medium text-gray-500 mb-1">Brand</label><input type="text" name="Brand" class="input-field"></div>
+                            <div><label class="block text-xs font-medium text-gray-500 mb-1">Model</label><input type="text" name="Model" class="input-field"></div>
+                            <div><label class="block text-xs font-medium text-gray-500 mb-1">Year</label><input type="text" name="Year" class="input-field"></div>
+                            <div><label class="block text-xs font-medium text-gray-500 mb-1">Serial #</label><input type="text" name="Serial #" class="input-field"></div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Power Source</label>
-                                <input type="text" name="Power source" id="a-power" class="input-field" placeholder="120V / Gas">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-500 mb-1">Color</label>
-                                <input type="text" name="Color" id="a-color" class="input-field">
-                            </div>
+                            <div><label class="block text-xs font-medium text-gray-500 mb-1">Power Source</label><input type="text" name="Power source" class="input-field"></div>
+                            <div><label class="block text-xs font-medium text-gray-500 mb-1">Color</label><input type="text" name="Color" class="input-field"></div>
                         </div>
 
                         <div class="mb-6">
                             <h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Occupant &amp; Owner</h3>
                             <div class="space-y-5">
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Occupant's Name</label>
-                                    <input type="text" name="Occupants' name" id="a-occ-name" class="input-field">
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Occupant's Name</label><input type="text" name="Occupants' name" class="input-field"></div>
                                 <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Occupant's Phone #</label>
-                                        <input type="tel" name="Occupant's phone #" id="a-occ-phone" class="input-field">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Phone #</label>
-                                        <input type="tel" name="Owner's phone #" id="a-owner-phone" class="input-field">
-                                    </div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Occupant's Phone #</label><input type="tel" name="Occupant's phone #" class="input-field"></div>
+                                    <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Phone #</label><input type="tel" name="Owner's phone #" class="input-field"></div>
                                 </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Name</label>
-                                    <input type="text" name="Owner's name" id="a-owner-name" class="input-field">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-medium text-gray-500 mb-1">Owner's Address</label>
-                                    <textarea name="Owner's address" id="a-owner-address" rows="2" class="input-field resize-y"></textarea>
-                                </div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Name</label><input type="text" name="Owner's name" class="input-field"></div>
+                                <div><label class="block text-xs font-medium text-gray-500 mb-1">Owner's Address</label><textarea name="Owner's address" rows="2" class="input-field resize-y"></textarea></div>
                             </div>
                         </div>
 
-                        <div class="form-card border border-dashed border-orange-300 bg-orange-50/50">
+                        <div class="form-card border-2 border-dashed border-orange-300 bg-orange-50/50">
                             <h3 class="section-header mb-4"><span>📝</span> Other Notes</h3>
-                            <textarea name="Other notes" id="a-notes" rows="6" class="input-field resize-y mb-4" placeholder="Describe the appliance, location in home, any pre-fire signs..."></textarea>
-                            <div class="bg-white rounded-2xl p-4 text-xs text-gray-600 flex items-start gap-2 border border-orange-200">
-                                📸 <strong>Take pictures of appliance, wiring, and surroundings</strong>
-                            </div>
+                            <textarea name="Other notes" rows="6" class="input-field resize-y mb-4"></textarea>
+                            <div class="bg-white rounded-2xl p-4 text-xs text-gray-600 flex items-start gap-2 border border-orange-200">📸 Take pictures of appliance, wiring, and surroundings</div>
                         </div>
                     </div>
                 </form>
             </div>
+        </div>
 
-            <!-- ACTION BAR -->
-            <div class="fixed bottom-0 left-0 right-0 max-w-[420px] mx-auto bg-white border-t border-gray-200 px-5 py-4 flex items-center gap-3 shadow-2xl z-20">
-                <button onclick="clearCurrentForm()" 
-                        class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-4 rounded-3xl text-base flex items-center justify-center gap-2">
-                    <span class="text-xl">🗑️</span> Clear
-                </button>
-                
-                <button onclick="exportCurrentReport()" 
-                        class="flex-1 bg-[#e6392e] hover:bg-[#c62c24] text-white font-semibold py-4 rounded-3xl text-base flex items-center justify-center gap-2 shadow-md">
-                    <span class="text-xl">📤</span> Export Report
-                </button>
-                
-                <button onclick="copyToClipboard()" 
-                        class="flex-1 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-4 rounded-3xl text-base flex items-center justify-center gap-2">
-                    📋 Copy
-                </button>
+        <!-- FIXED ACTION BAR -->
+        <div class="fixed bottom-0 left-0 right-0 max-w-[420px] mx-auto bg-white border-t border-gray-200 px-5 py-4 flex items-center gap-3 shadow-2xl z-20">
+            <button onclick="confirmClearReport()" class="flex-1 bg-gray-100 hover:bg-red-100 hover:text-red-700 text-gray-700 font-medium py-4 rounded-3xl text-base flex items-center justify-center gap-2">
+                <span class="text-xl">🗑️</span> Clear Report
+            </button>
+            <button onclick="exportCurrentReport()" class="flex-1 bg-[#e6392e] hover:bg-[#c62c24] text-white font-semibold py-4 rounded-3xl text-base flex items-center justify-center gap-2 shadow-md">
+                <span class="text-xl">📤</span> Export Report
+            </button>
+            <button onclick="copyToClipboard()" class="flex-1 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-4 rounded-3xl text-base flex items-center justify-center gap-2">
+                📋 Copy
+            </button>
+        </div>
+    </div>
+
+    <!-- CONFIRMATION MODAL -->
+    <div id="clear-modal" class="hidden fixed inset-0 bg-black/60 flex items-end justify-center z-50 pb-6">
+        <div class="modal bg-white w-full max-w-[380px] mx-4 rounded-3xl overflow-hidden">
+            <div class="p-6 text-center">
+                <div class="w-16 h-16 mx-auto bg-red-100 rounded-2xl flex items-center justify-center text-4xl mb-4">🗑️</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Clear this report?</h3>
+                <p class="text-gray-600 text-base">This will delete all entered information for the current tab.<br><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="border-t border-gray-200 flex">
+                <button onclick="hideModal()" class="flex-1 py-5 text-lg font-medium text-gray-500 hover:bg-gray-100">Cancel</button>
+                <button onclick="clearCurrentReport()" class="flex-1 py-5 text-lg font-medium text-red-600 hover:bg-red-50 border-l border-gray-200">Yes, Clear</button>
             </div>
         </div>
     </div>
 
-    <!-- SUCCESS TOAST -->
-    <div id="toast" onclick="this.classList.add('hidden')" 
-         class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-6 py-3 rounded-3xl shadow-2xl flex items-center gap-2 z-50">
+    <!-- TOAST -->
+    <div id="toast" onclick="this.classList.add('hidden')" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-6 py-3 rounded-3xl shadow-2xl flex items-center gap-2 z-50">
         <span id="toast-text"></span>
     </div>
 
     <script>
-        // Tailwind CDN initialization
-        function initializeTailwind() {
-            return {
-                config(userConfig = {}) {
-                    return {
-                        content: [],
-                        theme: {
-                            extend: {},
-                        },
-                        plugins: [],
-                        ...userConfig,
-                    }
-                },
-                theme: {
-                    extend: {},
-                },
-            }
-        }
-        
-        // Live clock in header
         function updateClock() {
-            const dateEl = document.getElementById('current-date')
-            const timeEl = document.getElementById('current-time')
-            
+            const dateEl = document.getElementById('current-date');
+            const timeEl = document.getElementById('current-time');
             function update() {
-                const now = new Date()
-                const dateOptions = { weekday: 'short', month: 'short', day: 'numeric' }
-                dateEl.textContent = now.toLocaleDateString('en-US', dateOptions)
-                timeEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+                const now = new Date();
+                dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                timeEl.textContent = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
             }
-            update()
-            setInterval(update, 60000)
+            update();
+            setInterval(update, 60000);
         }
-        
-        // Tab switching
-        let currentTabIndex = 0
-        
+
+        let currentTabIndex = 0;
+
         function switchTab(index) {
-            currentTabIndex = index
-            
-            // Update tab buttons
+            currentTabIndex = index;
             document.querySelectorAll('.tab-button').forEach((btn, i) => {
-                if (i === index) {
-                    btn.classList.add('active', 'text-[#e6392e]')
-                    btn.classList.remove('text-gray-500')
-                } else {
-                    btn.classList.remove('active', 'text-[#e6392e]')
-                    btn.classList.add('text-gray-500')
-                }
-            })
-            
-            // Show correct content
+                btn.classList.toggle('active', i === index);
+                btn.classList.toggle('text-[#e6392e]', i === index);
+                btn.classList.toggle('text-gray-500', i !== index);
+            });
             document.querySelectorAll('.tab-content').forEach((content, i) => {
-                if (i === index) {
-                    content.classList.remove('hidden')
-                } else {
-                    content.classList.add('hidden')
-                }
-            })
+                content.classList.toggle('hidden', i !== index);
+            });
+            document.getElementById('content-scroll').scrollTop = 0; // reset scroll when switching tabs
         }
-        
-        // Clear current form
-        function clearCurrentForm() {
-            const activeForm = document.querySelector('.tab-content:not(.hidden) form')
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerHTML = message;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        function confirmClearReport() {
+            document.getElementById('clear-modal').classList.remove('hidden');
+        }
+
+        function hideModal() {
+            document.getElementById('clear-modal').classList.add('hidden');
+        }
+
+        function clearCurrentReport() {
+            hideModal();
+            const activeForm = document.querySelector('.tab-content:not(.hidden) form');
             if (activeForm) {
-                activeForm.reset()
-                showToast('Form cleared ✅')
+                activeForm.reset();
+                localStorage.removeItem(activeForm.id);
+                showToast('✅ Report cleared');
             }
         }
-        
-        // Export current report as nicely formatted text + download + mailto option
+
         function exportCurrentReport() {
-            const activeContent = document.querySelector('.tab-content:not(.hidden)')
-            const form = activeContent.querySelector('form')
-            if (!form) return
-            
-            let title = ''
-            let type = ''
-            
-            if (activeContent.id === 'content-0') {
-                title = 'NFIRS Vehicle Fire Report'
-                type = 'Vehicle'
-            } else if (activeContent.id === 'content-1') {
-                title = 'NFIRS Structure Fire Report'
-                type = 'Structure'
-            } else if (activeContent.id === 'content-2') {
-                title = 'NFIRS Appliance Fire Report'
-                type = 'Appliance'
-            }
-            
-            const formData = new FormData(form)
-            let report = `${title}\n`
-            report += `Generated: ${new Date().toLocaleString('en-US')}\n`
-            report += `════════════════════════════════════\n\n`
-            
-            // Group fields nicely
-            let currentSection = ''
-            
+            const activeContent = document.querySelector('.tab-content:not(.hidden)');
+            const form = activeContent.querySelector('form');
+            if (!form) return;
+
+            let title = activeContent.id === 'content-0' ? 'NFIRS Vehicle Fire Report' :
+                        activeContent.id === 'content-1' ? 'NFIRS Structure Fire Report' : 'NFIRS Appliance Fire Report';
+
+            const formData = new FormData(form);
+            let report = `${title}\nGenerated: ${new Date().toLocaleString('en-US')}\n════════════════════════════════════\n\n`;
+
             for (const [key, value] of formData.entries()) {
-                if (!value) continue
-                
-                // Clean up key names for readability
-                let label = key
-                    .replace(/#/g, '')
-                    .replace(/of stories/g, 'Stories')
-                    .replace(/of units/g, 'Units')
-                    .replace(/d\/c/g, 'DC')
-                    .trim()
-                
-                if (label.includes('Detector')) {
-                    if (currentSection !== 'Detector') {
-                        report += `\n🔹 DETECTOR INFORMATION\n`
-                        currentSection = 'Detector'
-                    }
-                } else if (label.includes('Driver') || label.includes('Owner') || label.includes('Occupant')) {
-                    if (currentSection !== 'People') {
-                        report += `\n🔹 PEOPLE\n`
-                        currentSection = 'People'
-                    }
-                } else if (['Weather', 'Initial', 'Force', 'Windows', 'Ventilation', 'Actions', 'Noises', 'Maintenance'].some(w => label.includes(w))) {
-                    if (currentSection !== 'Narrative') {
-                        report += `\n🔹 NARRATIVE / ADDITIONAL INFO\n`
-                        currentSection = 'Narrative'
-                    }
-                }
-                
-                report += `${label}: ${value}\n`
+                if (value) report += `${key.replace(/#/g, '').trim()}: ${value}\n`;
             }
-            
-            // Add picture reminder
-            report += `\n\n📸 PHOTOS TAKEN: Remember to attach all required images in your final NFIRS report.\n`
-            
-            // Create downloadable TXT file
-            const blob = new Blob([report], { type: 'text/plain' })
-            const url = URL.createObjectURL(blob)
-            const a = document.createElement('a')
-            a.href = url
-            a.download = `${title.replace(/ /g, '_')}_${new Date().toISOString().slice(0,10)}.txt`
-            document.body.appendChild(a)
-            a.click()
-            document.body.removeChild(a)
-            URL.revokeObjectURL(url)
-            
-            // Also offer email option
-            const mailtoSubject = encodeURIComponent(title)
-            const mailtoBody = encodeURIComponent(report)
-            const mailtoLink = `mailto:?subject=${mailtoSubject}&body=${mailtoBody}`
-            
-            showToast('Report downloaded as TXT 📥<br><span class="text-xs opacity-75">Tap to email it too</span>')
-            
-            // Auto-open mailto after a tiny delay so user sees toast
+            report += `\n\n📸 PHOTOS TAKEN: Remember to attach all required images.\n`;
+
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${title.replace(/ /g, '_')}_${new Date().toISOString().slice(0,10)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            showToast('Report downloaded as TXT 📥');
             setTimeout(() => {
                 if (confirm('Open email app with this report?')) {
-                    window.location.href = mailtoLink
+                    window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(report)}`;
                 }
-            }, 1800)
+            }, 1500);
         }
-        
-        // Copy current report to clipboard
+
         function copyToClipboard() {
-            const activeContent = document.querySelector('.tab-content:not(.hidden)')
-            const form = activeContent.querySelector('form')
-            if (!form) return
-            
-            let title = ''
-            if (activeContent.id === 'content-0') title = 'NFIRS Vehicle Fire Report'
-            else if (activeContent.id === 'content-1') title = 'NFIRS Structure Fire Report'
-            else if (activeContent.id === 'content-2') title = 'NFIRS Appliance Fire Report'
-            
-            const formData = new FormData(form)
-            let text = `${title}\nGenerated: ${new Date().toLocaleString()}\n\n`
-            
+            const activeContent = document.querySelector('.tab-content:not(.hidden)');
+            const form = activeContent.querySelector('form');
+            if (!form) return;
+
+            let title = activeContent.id === 'content-0' ? 'NFIRS Vehicle Fire Report' :
+                        activeContent.id === 'content-1' ? 'NFIRS Structure Fire Report' : 'NFIRS Appliance Fire Report';
+
+            const formData = new FormData(form);
+            let text = `${title}\nGenerated: ${new Date().toLocaleString()}\n\n`;
             for (const [key, value] of formData.entries()) {
-                if (value) {
-                    const cleanKey = key.replace(/#/g, '').trim()
-                    text += `${cleanKey}: ${value}\n`
-                }
+                if (value) text += `${key.replace(/#/g, '').trim()}: ${value}\n`;
             }
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('✅ Report copied to clipboard')
-            }).catch(() => {
-                showToast('❌ Could not copy — try again')
-            })
+
+            navigator.clipboard.writeText(text).then(() => showToast('✅ Report copied to clipboard'));
         }
-        
-        // Toast helper
-        function showToast(message) {
-            const toast = document.getElementById('toast')
-            const textEl = document.getElementById('toast-text')
-            textEl.innerHTML = message
-            toast.classList.remove('hidden')
-            toast.style.display = 'flex'
-            
-            // Auto hide after 4 seconds
-            setTimeout(() => {
-                toast.classList.add('hidden')
-            }, 4000)
-        }
-        
-        // Main app initialization
+
         function initializeApp() {
-            initializeTailwind()
-            updateClock()
-            
-            // Default to first tab
-            switchTab(0)
-            
-            console.log('%c✅ NFIRS Standalone Mobile App Ready!', 'color:#e6392e; font-weight:600;')
-            
-            // Optional: Save form data to localStorage on input (so user can close browser and return)
-            document.querySelectorAll('input, select, textarea').forEach(el => {
-                el.addEventListener('change', () => {
-                    const formId = el.closest('form').id
-                    const data = {}
-                    const form = document.getElementById(formId)
-                    const formData = new FormData(form)
-                    for (const [k, v] of formData) {
-                        data[k] = v
-                    }
-                    localStorage.setItem(formId, JSON.stringify(data))
-                })
-            })
-            
-            // Restore any previously saved data
+            updateClock();
+            switchTab(0);
+
+            // Restore saved data
             setTimeout(() => {
                 ['vehicle-form', 'structure-form', 'appliance-form'].forEach(formId => {
-                    const saved = localStorage.getItem(formId)
+                    const saved = localStorage.getItem(formId);
                     if (saved) {
-                        const data = JSON.parse(saved)
-                        const form = document.getElementById(formId)
-                        if (form) {
-                            Object.keys(data).forEach(key => {
-                                const input = form.querySelector(`[name="${key}"]`)
-                                if (input) {
-                                    if (input.type === 'checkbox' || input.type === 'radio') {
-                                        input.checked = data[key]
-                                    } else {
-                                        input.value = data[key]
-                                    }
-                                }
-                            })
-                        }
+                        const data = JSON.parse(saved);
+                        const form = document.getElementById(formId);
+                        if (form) Object.keys(data).forEach(k => { const el = form.querySelector(`[name="${k}"]`); if (el) el.value = data[k]; });
                     }
-                })
-            }, 300)
-            
-            console.log('📱 Optimized for mobile phones — save this HTML file to your device for offline use.')
+                });
+            }, 300);
+
+            // Auto-save
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                el.addEventListener('change', () => {
+                    const form = el.closest('form');
+                    if (!form) return;
+                    const data = {};
+                    new FormData(form).forEach((v, k) => data[k] = v);
+                    localStorage.setItem(form.id, JSON.stringify(data));
+                });
+            });
+
+            console.log('%c✅ NFIRS App Updated – Centered + Visible Input Boxes + Extra Bottom Padding', 'color:#e6392e; font-weight:600');
         }
-        
-        // Boot the app
-        window.onload = initializeApp
+
+        window.onload = initializeApp;
     </script>
 </body>
 </html>
