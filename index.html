@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <title>NFIRS Reports</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,6 +13,11 @@
             transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 150ms;
+        }
+        
+        html, body {
+            overflow-x: hidden !important;
+            overscroll-behavior-x: none;
         }
         
         .tab-button {
@@ -44,11 +49,17 @@
         
         .phone-frame {
             max-width: 420px;
+            width: 100%;
             margin: 0 auto;
             box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
             border-radius: 40px;
             overflow: hidden;
             background: white;
+        }
+
+        #content-scroll {
+            overflow-x: hidden !important;
+            overscroll-behavior-x: none;
         }
 
         /* Modal */
@@ -62,8 +73,8 @@
         }
     </style>
 </head>
-<body class="bg-gray-950 min-h-screen flex items-center justify-center p-4">
-    <div class="phone-frame w-full">
+<body class="bg-gray-950 min-h-screen flex items-center justify-center p-4 overflow-x-hidden">
+    <div class="phone-frame">
         <!-- HEADER -->
         <div class="bg-[#e6392e] px-6 py-5 text-white">
             <div class="flex items-center justify-between">
@@ -88,7 +99,7 @@
             <button onclick="switchTab(2)" id="tab-2" class="tab-button flex-1 py-4 text-base font-semibold flex items-center justify-center gap-1">📦 Appliance</button>
         </div>
 
-        <!-- CONTENT CONTAINER – fixed height + extra bottom padding so nothing gets hidden -->
+        <!-- CONTENT CONTAINER – locked horizontally + extra bottom padding -->
         <div id="content-scroll" class="p-5 pb-32 max-h-[calc(100vh-140px)] overflow-y-auto">
             
             <!-- VEHICLE FIRE TAB -->
@@ -335,7 +346,7 @@
             document.querySelectorAll('.tab-content').forEach((content, i) => {
                 content.classList.toggle('hidden', i !== index);
             });
-            document.getElementById('content-scroll').scrollTop = 0; // reset scroll when switching tabs
+            document.getElementById('content-scroll').scrollTop = 0;
         }
 
         function showToast(message) {
@@ -439,7 +450,7 @@
                 });
             });
 
-            console.log('%c✅ NFIRS App Updated – Centered + Visible Input Boxes + Extra Bottom Padding', 'color:#e6392e; font-weight:600');
+            console.log('%c✅ NFIRS App – Horizontal movement locked (no more left/right shifting)', 'color:#e6392e; font-weight:600');
         }
 
         window.onload = initializeApp;
