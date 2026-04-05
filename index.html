@@ -10,6 +10,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
         
         * {
+            box-sizing: border-box !important;
             transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             transition-duration: 150ms;
@@ -17,7 +18,11 @@
         
         html, body {
             overflow-x: hidden !important;
-            overscroll-behavior-x: none;
+            overscroll-behavior-x: none !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         .tab-button {
@@ -48,9 +53,9 @@
         }
         
         .phone-frame {
-            max-width: 420px;
-            width: 100%;
-            margin: 0 auto;
+            width: 100% !important;
+            max-width: 420px !important;
+            margin: 0 auto !important;
             box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
             border-radius: 40px;
             overflow: hidden;
@@ -58,8 +63,12 @@
         }
 
         #content-scroll {
+            width: 100% !important;
+            max-width: 100% !important;
             overflow-x: hidden !important;
-            overscroll-behavior-x: none;
+            overscroll-behavior-x: none !important;
+            touch-action: pan-y !important;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Modal */
@@ -99,7 +108,7 @@
             <button onclick="switchTab(2)" id="tab-2" class="tab-button flex-1 py-4 text-base font-semibold flex items-center justify-center gap-1">📦 Appliance</button>
         </div>
 
-        <!-- CONTENT CONTAINER – locked horizontally + extra bottom padding -->
+        <!-- CONTENT CONTAINER – fully locked horizontally -->
         <div id="content-scroll" class="p-5 pb-32 max-h-[calc(100vh-140px)] overflow-y-auto">
             
             <!-- VEHICLE FIRE TAB -->
@@ -450,7 +459,7 @@
                 });
             });
 
-            console.log('%c✅ NFIRS App – Horizontal movement locked (no more left/right shifting)', 'color:#e6392e; font-weight:600');
+            console.log('%c✅ NFIRS App – Side-to-side movement completely locked', 'color:#e6392e; font-weight:600');
         }
 
         window.onload = initializeApp;
