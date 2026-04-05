@@ -40,8 +40,11 @@
             border-radius: 9999px;
         }
         
+        /* STRONGER OUTLINED TEXT BOXES */
         .input-field {
-            @apply w-full px-4 py-3.5 bg-white border-2 border-gray-300 rounded-3xl text-base focus:outline-none focus:border-[#e6392e] focus:ring-4 focus:ring-[#e6392e]/10 shadow-sm;
+            @apply w-full px-4 py-3.5 bg-white border-2 border-gray-400 rounded-3xl text-base 
+                   focus:outline-none focus:border-[#e6392e] focus:ring-4 focus:ring-[#e6392e]/10 
+                   shadow-[0_1px_3px_rgba(0,0,0,0.1)] hover:border-gray-500;
         }
         
         .section-header {
@@ -108,7 +111,7 @@
             <button onclick="switchTab(2)" id="tab-2" class="tab-button flex-1 py-4 text-base font-semibold flex items-center justify-center gap-1">📦 Appliance</button>
         </div>
 
-        <!-- CONTENT CONTAINER – fully locked horizontally -->
+        <!-- CONTENT CONTAINER -->
         <div id="content-scroll" class="p-5 pb-32 max-h-[calc(100vh-140px)] overflow-y-auto">
             
             <!-- VEHICLE FIRE TAB -->
@@ -459,7 +462,7 @@
                 });
             });
 
-            console.log('%c✅ NFIRS App – Side-to-side movement completely locked', 'color:#e6392e; font-weight:600');
+            console.log('%c✅ NFIRS App – Text boxes now have strong visible outlines', 'color:#e6392e; font-weight:600');
         }
 
         window.onload = initializeApp;
