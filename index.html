@@ -55,6 +55,18 @@
             box-shadow: 0 0 0 4px rgba(230, 57, 46, 0.15) !important;
         }
         
+        #print-area { display: none; }
+        @page { size: letter portrait; margin: 1in; }
+        @media print {
+            html, body { background: #fff !important; color: #000 !important; display: block !important; padding: 0 !important; margin: 0 !important; min-height: 0 !important; overflow: visible !important; }
+            body > *:not(#print-area) { display: none !important; }
+            #print-area { display: block !important; font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.35; color: #000; }
+            #print-area h1 { font-size: 16pt; margin: 0 0 2pt; font-weight: bold; }
+            #print-area .gen { margin: 0 0 14pt; }
+            #print-area h2 { font-size: 12pt; margin: 14pt 0 4pt; font-weight: bold; text-transform: uppercase; break-after: avoid; }
+            #print-area .row { margin: 0 0 4pt; break-inside: avoid; white-space: pre-wrap; }
+            #print-area .row b { font-weight: bold; }
+        }
         details.neris > summary { cursor: pointer; list-style: none; }
         details.neris > summary::-webkit-details-marker { display: none; }
         details.neris[open] .chev { transform: rotate(90deg); }
@@ -309,15 +321,18 @@
         </div>
 
         <!-- FIXED ACTION BAR – slightly more compact -->
-        <div class="fixed bottom-0 left-0 right-0 max-w-[420px] mx-auto bg-white border-t border-gray-200 px-5 py-3.5 flex items-center gap-3 shadow-2xl z-20">
-            <button onclick="confirmClearReport()" class="flex-1 bg-gray-100 hover:bg-red-100 hover:text-red-700 text-gray-700 font-medium py-3.5 rounded-3xl text-base flex items-center justify-center gap-2">
+        <div class="fixed bottom-0 left-0 right-0 max-w-[420px] mx-auto bg-white border-t border-gray-200 px-3 py-3.5 flex items-center gap-2 shadow-2xl z-20">
+            <button onclick="confirmClearReport()" class="flex-1 bg-gray-100 hover:bg-red-100 hover:text-red-700 text-gray-700 font-medium py-3.5 rounded-3xl text-sm flex items-center justify-center gap-1">
                 <span class="text-xl">🗑️</span> Clear
             </button>
-            <button onclick="exportCurrentReport()" class="flex-1 bg-[#e6392e] hover:bg-[#c62c24] text-white font-semibold py-3.5 rounded-3xl text-base flex items-center justify-center gap-2 shadow-md">
+            <button onclick="exportCurrentReport()" class="flex-1 bg-[#e6392e] hover:bg-[#c62c24] text-white font-semibold py-3.5 rounded-3xl text-sm flex items-center justify-center gap-1 shadow-md">
                 <span class="text-xl">📤</span> Export
             </button>
-            <button onclick="copyToClipboard()" class="flex-1 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-3.5 rounded-3xl text-base flex items-center justify-center gap-2">
+            <button onclick="copyToClipboard()" class="flex-1 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-3.5 rounded-3xl text-sm flex items-center justify-center gap-1">
                 📋 Copy
+            </button>
+            <button onclick="printReport()" class="flex-1 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-3.5 rounded-3xl text-sm flex items-center justify-center gap-1">
+                🖨️ PDF
             </button>
         </div>
     </div>
@@ -336,6 +351,8 @@
             </div>
         </div>
     </div>
+
+    <div id="print-area" aria-hidden="true"></div>
 
     <!-- TOAST -->
     <div id="toast" onclick="this.classList.add('hidden')" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-6 py-3 rounded-3xl shadow-2xl flex items-center gap-2 z-50">
@@ -442,6 +459,35 @@
             }
 
             navigator.clipboard.writeText(text).then(() => showToast('✅ Report copied to clipboard'));
+        }
+
+        // Printer-friendly PDF: plain black-on-white, filled fields only, letter page, 1in margins.
+        // Opens the system print sheet; choose "Save as PDF" (or print directly).
+        function printReport() {
+            const activeContent = document.querySelector('.tab-content:not(.hidden)');
+            const form = activeContent.querySelector('form');
+            if (!form) return;
+            const title = activeContent.id === 'content-0' ? 'NERIS Vehicle Fire Report' :
+                          activeContent.id === 'content-1' ? 'NERIS Structure Fire Report' : 'NERIS Appliance Fire Report';
+            const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            let html = '', pending = '', count = 0;
+            form.querySelectorAll('h3, input, select, textarea').forEach(el => {
+                if (el.tagName === 'H3') {
+                    pending = el.textContent.replace(/📝|📸/g, '').trim() + (el.closest('details') ? ' (NERIS)' : '');
+                    return;
+                }
+                const v = (el.value || '').trim();
+                if (!v) return;
+                const label = (el.parentElement.querySelector('label')?.textContent || el.name).trim();
+                if (pending) { html += `<h2>${esc(pending)}</h2>`; pending = ''; }
+                const shown = el.type === 'datetime-local' ? new Date(v).toLocaleString('en-US') : v;
+                html += `<div class="row"><b>${esc(label)}:</b> ${esc(shown)}</div>`;
+                count++;
+            });
+            if (!count) { showToast('Nothing entered yet'); return; }
+            document.getElementById('print-area').innerHTML =
+                `<h1>${title}</h1><div class="gen">Generated: ${esc(new Date().toLocaleString('en-US'))}</div>${html}`;
+            window.print();
         }
 
         function initializeApp() {
