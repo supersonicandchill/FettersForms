@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>NFIRS Reports</title>
+    <meta name="color-scheme" content="light only">
+    <title>NERIS Capture</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
@@ -13,6 +14,7 @@
             box-sizing: border-box !important;
         }
         
+        html { color-scheme: light only; }
         html, body {
             overflow-x: hidden !important;
             overscroll-behavior-x: none !important;
@@ -53,15 +55,11 @@
             box-shadow: 0 0 0 4px rgba(230, 57, 46, 0.15) !important;
         }
         
-        .section-header {
-            @apply text-lg font-semibold text-gray-900 flex items-center gap-2;
-        }
-        
-        .form-card {
-            @apply bg-white rounded-3xl shadow-sm border border-gray-200 p-6 mb-6;
-            overflow: hidden;
-        }
-        
+        details.neris > summary { cursor: pointer; list-style: none; }
+        details.neris > summary::-webkit-details-marker { display: none; }
+        details.neris[open] .chev { transform: rotate(90deg); }
+        .chev { display: inline-block; transition: transform .15s; }
+
         .phone-frame {
             width: 100% !important;
             max-width: 420px !important;
@@ -80,6 +78,10 @@
             touch-action: pan-y !important;
         }
     </style>
+    <style type="text/tailwindcss">
+        .section-header { @apply text-lg font-semibold text-gray-900 flex items-center gap-2; }
+        .form-card { @apply bg-white rounded-3xl shadow-sm border border-gray-200 p-6 mb-6; overflow: hidden; }
+    </style>
 </head>
 <body class="bg-gray-950 min-h-screen flex items-center justify-center p-4 overflow-x-hidden">
     <div class="phone-frame">
@@ -89,7 +91,7 @@
                 <div class="flex items-center gap-x-3">
                     <div class="w-9 h-9 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">🔥</div>
                     <div>
-                        <h1 class="text-2xl font-semibold tracking-[-0.5px]">NFIRS Reports</h1>
+                        <h1 class="text-2xl font-semibold tracking-[-0.5px]">NERIS Capture</h1>
                         <p class="text-white/80 text-sm">Field Information Gathering</p>
                     </div>
                 </div>
@@ -157,6 +159,9 @@
                             </div>
                         </div>
 
+<details class="neris mb-6 rounded-2xl border border-gray-300 bg-gray-50"><summary class="px-4 py-3.5 font-semibold text-gray-800 flex items-center gap-2"><span class="chev">▶</span> More NERIS fields <span class="text-xs font-normal text-gray-500">(optional)</span></summary><div class="px-4 pt-2 pb-2"><div class="mb-6"><h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Incident &amp; Location</h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Incident #</label><input type="text" name="Incident number" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Alarm Date/Time</label><input type="datetime-local" name="Alarm date/time" class="input-field"></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Primary Incident Type</label><select name="Primary incident type" class="input-field"><option value="">Select...</option><option value="Vehicle fire (passenger)">Vehicle fire (passenger)</option><option value="Vehicle fire (commercial / heavy)">Vehicle fire (commercial / heavy)</option><option value="Other transportation fire">Other transportation fire</option></select></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Additional Incident Type (up to 2)</label><input type="text" name="Additional incident types" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Aid Given / Received</label><select name="Aid given or received" class="input-field"><option value="">Select...</option><option value="None">None</option><option value="Given">Given</option><option value="Received">Received</option></select></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Road / Location (street, mile marker, lot)</label><input type="text" name="Address line 1" class="input-field"></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">City</label><input type="text" name="City" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">State</label><input type="text" name="State" class="input-field"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">People Displaced</label><input type="number" name="People displaced" class="input-field" inputmode="numeric"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Injuries / Fatalities</label><input type="text" name="Injuries / fatalities" class="input-field"></div></div></div></div>
+<div class="mb-6"><h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Ignition</h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Area / Room of Origin</label><input type="text" name="Area of origin" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Item First Ignited</label><input type="text" name="Item first ignited" class="input-field"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Confined to Object of Origin?</label><select name="Confined to object of origin" class="input-field"><option value="">Select...</option><option value="Yes">Yes</option><option value="No">No</option><option value="Unknown">Unknown</option></select></div><div><label class="block text-xs font-medium text-gray-500 mb-1">EV / Battery / Energy Storage Involved?</label><select name="Energy storage system involved" class="input-field"><option value="">Select...</option><option value="Yes">Yes</option><option value="No">No</option><option value="Unknown">Unknown</option></select></div></div></div></div>
+</div></details>
                         <div class="form-card border-2 border-dashed border-orange-300 bg-orange-50/50">
                             <h3 class="section-header mb-4"><span>📝</span> Narrative Information</h3>
                             <div class="space-y-4">
@@ -230,6 +235,11 @@
                             </div>
                         </div>
 
+<details class="neris mb-6 rounded-2xl border border-gray-300 bg-gray-50"><summary class="px-4 py-3.5 font-semibold text-gray-800 flex items-center gap-2"><span class="chev">▶</span> More NERIS fields <span class="text-xs font-normal text-gray-500">(optional)</span></summary><div class="px-4 pt-2 pb-2"><div class="mb-6"><h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Incident &amp; Location</h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Incident #</label><input type="text" name="Incident number" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Alarm Date/Time</label><input type="datetime-local" name="Alarm date/time" class="input-field"></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Primary Incident Type</label><select name="Primary incident type" class="input-field"><option value="">Select...</option><option value="Structure fire (building)">Structure fire (building)</option><option value="Structure fire (other structure)">Structure fire (other structure)</option><option value="Confined fire">Confined fire</option><option value="Other fire">Other fire</option></select></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Additional Incident Type (up to 2)</label><input type="text" name="Additional incident types" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Aid Given / Received</label><select name="Aid given or received" class="input-field"><option value="">Select...</option><option value="None">None</option><option value="Given">Given</option><option value="Received">Received</option></select></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Unit / Suite</label><input type="text" name="Unit/suite" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">City</label><input type="text" name="City" class="input-field"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">State</label><input type="text" name="State" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Zip Code</label><input type="text" name="Zip code" class="input-field"></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Location Use Type (what the property is used for)</label><input type="text" name="Location use type" class="input-field"></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">People Displaced</label><input type="number" name="People displaced" class="input-field" inputmode="numeric"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Injuries / Fatalities</label><input type="text" name="Injuries / fatalities" class="input-field"></div></div></div></div>
+<div class="mb-6"><h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Structure Details</h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Structure Type</label><input type="text" name="Structure type" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Property Status</label><input type="text" name="Property status" class="input-field"></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Construction Type</label><input type="text" name="Construction type" class="input-field"></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Floors Above Grade</label><input type="number" name="Floors above grade" class="input-field" inputmode="numeric"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Floors Below Grade</label><input type="number" name="Floors below grade" class="input-field" inputmode="numeric"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Length (ft)</label><input type="number" name="Length (ft)" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Width (ft)</label><input type="number" name="Width (ft)" class="input-field"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Square Feet</label><input type="number" name="Square feet" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Buildings Threatened</label><input type="number" name="Buildings threatened" class="input-field"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Rooms Damaged</label><input type="number" name="Number of rooms damaged" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Stories Damaged by Flame</label><input type="number" name="Stories damaged by flame" class="input-field"></div></div></div></div>
+<div class="mb-6"><h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Ignition</h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Area / Room of Origin</label><input type="text" name="Area of origin" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Item First Ignited</label><input type="text" name="Item first ignited" class="input-field"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Confined to Object of Origin?</label><select name="Confined to object of origin" class="input-field"><option value="">Select...</option><option value="Yes">Yes</option><option value="No">No</option><option value="Unknown">Unknown</option></select></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Energy Storage System Involved?</label><select name="Energy storage system involved" class="input-field"><option value="">Select...</option><option value="Yes">Yes</option><option value="No">No</option><option value="Unknown">Unknown</option></select></div></div></div></div>
+<div class="mb-6"><h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Alarms &amp; Suppression</h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Smoke Alarm Present?</label><select name="Smoke alarm present" class="input-field"><option value="">Select...</option><option value="Yes">Yes</option><option value="No">No</option><option value="Unknown">Unknown</option></select></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Monitored Alarm?</label><select name="Monitored alarm" class="input-field"><option value="">Select...</option><option value="Yes">Yes</option><option value="No">No</option><option value="Unknown">Unknown</option></select></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Automatic Extinguishing System (Sprinkler)?</label><select name="Automatic extinguishing system" class="input-field"><option value="">Select...</option><option value="None">None</option><option value="Present - operated">Present - operated</option><option value="Present - did not operate">Present - did not operate</option><option value="Unknown">Unknown</option></select></div></div></div>
+</div></details>
                         <div class="form-card border-2 border-dashed border-orange-300 bg-orange-50/50">
                             <h3 class="section-header mb-4"><span>📝</span> Narrative Information</h3>
                             <div class="space-y-4">
@@ -285,6 +295,9 @@
                             </div>
                         </div>
 
+<details class="neris mb-6 rounded-2xl border border-gray-300 bg-gray-50"><summary class="px-4 py-3.5 font-semibold text-gray-800 flex items-center gap-2"><span class="chev">▶</span> More NERIS fields <span class="text-xs font-normal text-gray-500">(optional)</span></summary><div class="px-4 pt-2 pb-2"><div class="mb-6"><h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Incident &amp; Location</h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Incident #</label><input type="text" name="Incident number" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Alarm Date/Time</label><input type="datetime-local" name="Alarm date/time" class="input-field"></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Primary Incident Type</label><select name="Primary incident type" class="input-field"><option value="">Select...</option><option value="Equipment / appliance fire">Equipment / appliance fire</option><option value="Confined fire">Confined fire</option><option value="Other fire">Other fire</option></select></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Additional Incident Type (up to 2)</label><input type="text" name="Additional incident types" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Aid Given / Received</label><select name="Aid given or received" class="input-field"><option value="">Select...</option><option value="None">None</option><option value="Given">Given</option><option value="Received">Received</option></select></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Address Line 1</label><input type="text" name="Address line 1" class="input-field"></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Unit / Suite</label><input type="text" name="Unit/suite" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">City</label><input type="text" name="City" class="input-field"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">State</label><input type="text" name="State" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Zip Code</label><input type="text" name="Zip code" class="input-field"></div></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Location Use Type (what the property is used for)</label><input type="text" name="Location use type" class="input-field"></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">People Displaced</label><input type="number" name="People displaced" class="input-field" inputmode="numeric"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Injuries / Fatalities</label><input type="text" name="Injuries / fatalities" class="input-field"></div></div></div></div>
+<div class="mb-6"><h3 class="text-sm uppercase tracking-widest font-medium text-gray-500 mb-3">Ignition</h3><div class="space-y-4"><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Area / Room of Origin</label><input type="text" name="Area of origin" class="input-field"></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Item First Ignited</label><input type="text" name="Item first ignited" class="input-field"></div></div><div class="grid grid-cols-2 gap-4"><div><label class="block text-xs font-medium text-gray-500 mb-1">Confined to Object of Origin?</label><select name="Confined to object of origin" class="input-field"><option value="">Select...</option><option value="Yes">Yes</option><option value="No">No</option><option value="Unknown">Unknown</option></select></div><div><label class="block text-xs font-medium text-gray-500 mb-1">Battery / Energy Storage Involved?</label><select name="Energy storage system involved" class="input-field"><option value="">Select...</option><option value="Yes">Yes</option><option value="No">No</option><option value="Unknown">Unknown</option></select></div></div></div></div>
+</div></details>
                         <div class="form-card border-2 border-dashed border-orange-300 bg-orange-50/50">
                             <h3 class="section-header mb-4"><span>📝</span> Other Notes</h3>
                             <textarea name="Other notes" rows="6" class="input-field resize-y mb-4"></textarea>
@@ -387,8 +400,8 @@
             const form = activeContent.querySelector('form');
             if (!form) return;
 
-            let title = activeContent.id === 'content-0' ? 'NFIRS Vehicle Fire Report' :
-                        activeContent.id === 'content-1' ? 'NFIRS Structure Fire Report' : 'NFIRS Appliance Fire Report';
+            let title = activeContent.id === 'content-0' ? 'NERIS Vehicle Fire Report' :
+                        activeContent.id === 'content-1' ? 'NERIS Structure Fire Report' : 'NERIS Appliance Fire Report';
 
             const formData = new FormData(form);
             let report = `${title}\nGenerated: ${new Date().toLocaleString('en-US')}\n════════════════════════════════════\n\n`;
@@ -419,8 +432,8 @@
             const form = activeContent.querySelector('form');
             if (!form) return;
 
-            let title = activeContent.id === 'content-0' ? 'NFIRS Vehicle Fire Report' :
-                        activeContent.id === 'content-1' ? 'NFIRS Structure Fire Report' : 'NFIRS Appliance Fire Report';
+            let title = activeContent.id === 'content-0' ? 'NERIS Vehicle Fire Report' :
+                        activeContent.id === 'content-1' ? 'NERIS Structure Fire Report' : 'NERIS Appliance Fire Report';
 
             const formData = new FormData(form);
             let text = `${title}\nGenerated: ${new Date().toLocaleString()}\n\n`;
@@ -443,17 +456,20 @@
                         const form = document.getElementById(formId);
                         if (form) Object.keys(data).forEach(k => { const el = form.querySelector(`[name="${k}"]`); if (el) el.value = data[k]; });
                     }
+                    document.querySelectorAll('details.neris').forEach(d => { if ([...d.querySelectorAll('input,select,textarea')].some(e => e.value)) d.open = true; });
                 });
             }, 300);
 
             document.querySelectorAll('input, select, textarea').forEach(el => {
-                el.addEventListener('change', () => {
+                const save = () => {
                     const form = el.closest('form');
                     if (!form) return;
                     const data = {};
                     new FormData(form).forEach((v, k) => data[k] = v);
                     localStorage.setItem(form.id, JSON.stringify(data));
-                });
+                };
+                el.addEventListener('input', save);
+                el.addEventListener('change', save);
             });
         }
 
